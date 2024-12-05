@@ -1,0 +1,607 @@
+{
+    "name":"juju-78de9e-5",
+    "uuid":"d1accc55-4b11-47c4-a83f-7989d9c3f806",
+    "version":{
+        "number":"2.17.0",
+        "build_hash":"66369eb405516ab49de56f0d86ef4c5fb8ea031d",
+        "build_number":7946,
+        "build_snapshot":false
+    },
+    "status":{
+        "overall":{
+            "since":"2024-12-05T21:12:56.507Z",
+            "state":"green",
+            "title":"Green",
+            "nickname":"Looking good",
+            "icon":"success",
+            "uiColor":"secondary"
+        },
+        "statuses":[
+            {
+                "id":"core:opensearch@2.17.0",
+                "message":"OpenSearch is available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"core:savedObjects@2.17.0",
+                "message":"SavedObjects service has completed migrations and is available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:advancedSettings@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:bfetch@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:charts@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:contentManagement@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:dataExplorer@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:embeddable@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:devTools@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:discover@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:expressions@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:management@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:indexPatternManagement@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:inspector@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:navigation@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:managementOverview@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:opensearchDashboardsOverview@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:legacyExport@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:opensearchDashboardsReact@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:share@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:savedObjectsManagement@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:savedObjects@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:opensearchDashboardsUsageCollection@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:opensearchUiShared@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:opensearchDashboardsUtils@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:urlForwarding@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:uiActions@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visDefaultEditor@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visualize@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visualizations@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:notificationsDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:ganttChartDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:queryWorkbenchDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:apmOss@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:console@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:dashboard@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:data@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:dataSourceManagement@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:home@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:inputControlVis@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:mapsLegacy@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:opensearchDashboardsLegacy@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:regionMap@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:queryEnhancements@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visBuilder@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:tileMap@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visAugmenter@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:usageCollection@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visTypeMetric@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visTypeMarkdown@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visTypeTable@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visTypeTagcloud@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visTypeVislib@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visTypeTimeline@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:alertingDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:assistantDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visTypeVega@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:mlCommonsDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:visTypeTimeseries@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:customImportMapDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:anomalyDetectionDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:searchRelevanceDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:indexManagementDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:reportsDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:observabilityDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:securityAnalyticsDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:securityDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            }
+        ]
+    },
+    "metrics":{
+        "last_updated":"2024-12-05T21:12:56.297Z",
+        "collection_interval_in_millis":5000,
+        "os":{
+            "platform":"linux",
+            "platformRelease":"linux-6.11.0-9-generic",
+            "load":{
+                "1m":0.74,
+                "5m":0.73,
+                "15m":0.81
+            },
+            "memory":{
+                "total_in_bytes":40482496512,
+                "free_in_bytes":39975735296,
+                "used_in_bytes":506761216
+            },
+            "uptime_in_millis":32528680,
+            "distro":"Ubuntu",
+            "distroRelease":"Ubuntu-22.04"
+        },
+        "process":{
+            "memory":{
+                "heap":{
+                    "total_in_bytes":161812480,
+                    "used_in_bytes":144470864,
+                    "size_limit":4345298944
+                },
+                "resident_set_size_in_bytes":224464896
+            },
+            "pid":19350,
+            "event_loop_delay":1.7875459976494312,
+            "uptime_in_millis":8058334.333332
+        },
+        "response_times":{
+            "avg_in_millis":0,
+            "max_in_millis":0
+        },
+        "concurrent_connections":1,
+        "requests":{
+            "disconnects":0,
+            "total":0,
+            "statusCodes":{
+
+            },
+            "status_codes":{
+
+            }
+        }
+    }
+}
