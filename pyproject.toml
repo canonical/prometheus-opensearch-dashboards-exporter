@@ -5,6 +5,14 @@ description = "An exporter for OpenSearch Dashboards"
 authors = ["Gabriel Cocenza <gabriel.cocenza@canonical.com>"]
 license = "Apache License"
 readme = "README.md"
+packages = [
+    { include = "src" }
+]
+
+
+[tool.poetry.scripts]
+prometheus-opensearch-dashboards-exporter = "src.main:main"
+
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -47,6 +55,7 @@ relative_files = true
 branch = true
 
 [tool.coverage.report]
+fail_under = 100
 show_missing = true
 
 [tool.pytest.ini_options]
@@ -100,6 +109,11 @@ ignore-paths = [
     "tests",
     "docs"
 ]
+default-docstring-type = "google"
+accept-no-param-doc = false
+accept-no-raise-doc = false
+accept-no-return-doc = false
+accept-no-yields-doc = false
 
 [tool.mypy]
 warn_unused_ignores = true
@@ -121,7 +135,7 @@ exclude = [
 ]
 
 [tool.codespell]
-skip = ".eggs,.tox,.git,.venv,venv,build,.build,lib,report,docs,poetry.lock"
+skip = ".eggs,.tox,.git,.venv,venv,build,.build,lib,report,docs,poetry.lock, htmlcov"
 quiet-level = 3
 check-filenames = true
 ignore-words-list = "assertIn"

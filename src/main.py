@@ -5,12 +5,13 @@
 import argparse
 import logging
 import os
+import sys
 from wsgiref.simple_server import make_server
 
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
 
-from collector import Config, DashBoardsCollector
+from src.collector import Config, DashBoardsCollector
 
 
 def setup_logging() -> None:
@@ -22,10 +23,11 @@ def setup_logging() -> None:
     )
 
 
-def parse_command_line() -> argparse.Namespace:
+def parse_command_line(args: list[str]) -> argparse.Namespace:
     """Command line parser.
 
-    Parse command line arguments and return the arguments.
+    Args:
+        args (list[str]): List of arguments to parse
 
     Returns:
         argparse.Namespace: Command line arguments.
@@ -46,12 +48,16 @@ def parse_command_line() -> argparse.Namespace:
         help="The port number to the prometheus exporter to use (default: 9684)",
     )
 
-    return parser.parse_args()
+    if len(args) == 0 or (len(args) == 1 and args[0] == "help"):
+        parser.print_help()
+        parser.exit()
+
+    return parser.parse_args(args)
 
 
 def main() -> None:
     """Enter the exporter application"""
-    args = parse_command_line()
+    args = parse_command_line(sys.argv[1:])
     setup_logging()
     user = os.getenv("OPENSEARCH_DASHBOARDS_USER", "")
     password = os.getenv("OPENSEARCH_DASHBOARDS_PASSWORD", "")

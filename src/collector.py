@@ -5,6 +5,7 @@
 import json
 import logging
 from dataclasses import dataclass
+from enum import Enum
 from typing import Generator, Optional
 
 import requests
@@ -26,6 +27,44 @@ class Config:
     url: str
     user: str
     password: str
+
+
+class Heap(Enum):
+    """Possible heap types for the metrics"""
+
+    USED = "used_in_bytes"
+    TOTAL = "total_in_bytes"
+    LIMIT = "size_limit"
+
+
+class Load(Enum):
+    """Possible heap types for the metrics"""
+
+    ONE_M = "1m"
+    FIVE_M = "5m"
+    FIFTEEN_M = "15m"
+
+
+class Memory(Enum):
+    """Possible memory types for the metrics"""
+
+    USED = "used_in_bytes"
+    TOTAL = "total_in_bytes"
+    FREE = "free_in_bytes"
+
+
+class Response(Enum):
+    """Possible response times types for the metrics"""
+
+    MAX = "max_in_millis"
+    AVG = "avg_in_millis"
+
+
+class RequestsCount(Enum):
+    """Possible requests count types for the metrics"""
+
+    DISCONNECTS = "disconnects"
+    TOTAL = "total"
 
 
 class DashBoardsCollector(Collector):
@@ -66,6 +105,9 @@ class DashBoardsCollector(Collector):
     def metrics(self, api_metrics: dict) -> list[tuple[str, Optional[Metric]]]:
         """Get the OpenSearch dashboard prometheus metrics.
 
+        Args:
+            api_metrics (dict): Metrics from the OpenSearch Dashboards API
+
         Returns:
             list[tuple[str, Optional[Metric]]]: Prometheus Gauge metrics of the dashboards
         """
@@ -74,20 +116,20 @@ class DashBoardsCollector(Collector):
             ("current_connections", _get_current_connections_metric(api_metrics)),
             ("up_time", _get_up_time_metric(api_metrics)),
             ("event_loop_delay", _get_event_loop_delay_metric(api_metrics)),
-            ("heap_total", _get_heap_total(api_metrics)),
-            ("heap_used", _get_heap_used(api_metrics)),
-            ("heap_limit", _get_heap_limit(api_metrics)),
+            ("heap_total", _get_heap(api_metrics, Heap.TOTAL)),
+            ("heap_used", _get_heap(api_metrics, Heap.USED)),
+            ("heap_limit", _get_heap(api_metrics, Heap.LIMIT)),
             ("re_set_size", _get_resident_set_size(api_metrics)),
-            ("load_1m", _get_load_1m(api_metrics)),
-            ("load_5m", _get_load_5m(api_metrics)),
-            ("load_15m", _get_load_15m(api_metrics)),
-            ("os_mem_total", _get_os_mem_total(api_metrics)),
-            ("os_mem_free", _get_os_mem_free(api_metrics)),
-            ("os_mem_used", _get_os_mem_used(api_metrics)),
-            ("resp_time_avg", _get_resp_time_avg(api_metrics)),
-            ("resp_time_max", _get_resp_time_max(api_metrics)),
-            ("req_disconnects", _get_req_disconnects(api_metrics)),
-            ("req_total", _get_req_total(api_metrics)),
+            ("load_1m", _get_load(api_metrics, Load.ONE_M)),
+            ("load_5m", _get_load(api_metrics, Load.FIVE_M)),
+            ("load_15m", _get_load(api_metrics, Load.FIFTEEN_M)),
+            ("os_mem_total", _get_os_mem(api_metrics, Memory.TOTAL)),
+            ("os_mem_free", _get_os_mem(api_metrics, Memory.FREE)),
+            ("os_mem_used", _get_os_mem(api_metrics, Memory.USED)),
+            ("resp_time_avg", _get_resp_time(api_metrics, Response.AVG)),
+            ("resp_time_max", _get_resp_time(api_metrics, Response.MAX)),
+            ("req_disconnects", _get_req(api_metrics, RequestsCount.DISCONNECTS)),
+            ("req_total", _get_req(api_metrics, RequestsCount.TOTAL)),
         ] + [("statuses", status) for status in _get_statuses_metrics(api_metrics)]
 
 
@@ -221,11 +263,11 @@ def _get_current_connections_metric(api_metrics: dict) -> Optional[Metric]:
     """
     metric_name = f"{METRICS_PREFIX}current_connections"
     match api_metrics:
-        case {"metrics": {"concurrent_connections": concurrent_connections}}:
+        case {"metrics": {"concurrent_connections": value}}:
             return GaugeMetricFamily(
                 name=metric_name,
                 documentation="OpenSearch dashboards number of concurrent connections",
-                value=concurrent_connections,
+                value=value,
             )
         case _:
             return None
@@ -294,274 +336,121 @@ def _get_resident_set_size(api_metrics: dict) -> Optional[Metric]:
             return None
 
 
-def _get_heap_total(api_metrics: dict) -> Optional[Metric]:
-    """Get the Opensearch dashboards memory heap total in bytes.
-
-    Args:
-        api_metrics (dict): Response from the API
-
-    Returns:
-        Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
-    """
-    metric_name = f"{METRICS_PREFIX}heap_total"
-    match api_metrics:
-        case {"metrics": {"process": {"memory": {"heap": {"total_in_bytes": value}}}}}:
-            return GaugeMetricFamily(
-                name=metric_name,
-                documentation="Opensearch dashboards memory heap total in bytes",
-                value=value,
-            )
-        case _:
-            return None
-
-
-def _get_heap_used(api_metrics: dict) -> Optional[Metric]:
+def _get_heap(api_metrics: dict, heap: Heap) -> Optional[Metric]:
     """Get the Opensearch dashboards memory heap used in bytes.
 
     Args:
         api_metrics (dict): Response from the API
+        heap (Heap): Possible heap types from the API
 
     Returns:
         Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
     """
-    metric_name = f"{METRICS_PREFIX}heap_used"
+    heap_value = heap.value
+    prefix = heap_value.split("_")[0]
+    metric_name = f"{METRICS_PREFIX}heap_{prefix}"
     match api_metrics:
-        case {"metrics": {"process": {"memory": {"heap": {"used_in_bytes": value}}}}}:
+        case {
+            "metrics": {"process": {"memory": {"heap": heap_values}}}
+        } if heap_value in heap_values:
             return GaugeMetricFamily(
                 name=metric_name,
-                documentation="Opensearch dashboards memory heap used in bytes",
-                value=value,
+                documentation=f"Opensearch dashboards memory heap {prefix} in bytes",
+                value=heap_values[heap_value],
             )
         case _:
             return None
 
 
-def _get_heap_limit(api_metrics: dict) -> Optional[Metric]:
-    """Get theOpensearch dashboards memory heap limit set in bytes.
+def _get_load(api_metrics: dict, load: Load) -> Optional[Metric]:
+    """Get the OpenSearch dashboards load average.
 
     Args:
         api_metrics (dict): Response from the API
+        load (Load): Possible load types from the API
 
     Returns:
         Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
     """
-    metric_name = f"{METRICS_PREFIX}heap_limit"
+    load_value = load.value
+    metric_name = f"{METRICS_PREFIX}load{load_value}"
     match api_metrics:
-        case {"metrics": {"process": {"memory": {"heap": {"size_limit": value}}}}}:
+        case {"metrics": {"os": {"load": load_values}}} if load_value in load_values:
             return GaugeMetricFamily(
                 name=metric_name,
-                documentation="Opensearch dashboards memory heap limit set in bytes",
-                value=value,
+                documentation=f"OpenSearch dashboards load average {load_value}",
+                value=load_values[load_value],
             )
         case _:
             return None
 
 
-def _get_load_1m(api_metrics: dict) -> Optional[Metric]:
-    """Get the OpenSearch dashboards load average 1m.
-
-    Args:
-        api_metrics (dict): Response from the API
-
-    Returns:
-        Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
-    """
-    metric_name = f"{METRICS_PREFIX}load1m"
-    match api_metrics:
-        case {"metrics": {"os": {"load": {"1m": value}}}}:
-            return GaugeMetricFamily(
-                name=metric_name,
-                documentation="OpenSearch dashboards load average 1m",
-                value=value,
-            )
-        case _:
-            return None
-
-
-def _get_load_5m(api_metrics: dict) -> Optional[Metric]:
-    """Get the OpenSearch dashboards load average 5m.
-
-    Args:
-        api_metrics (dict): Response from the API
-
-    Returns:
-        Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
-    """
-    metric_name = f"{METRICS_PREFIX}load5m"
-    match api_metrics:
-        case {"metrics": {"os": {"load": {"5m": value}}}}:
-            return GaugeMetricFamily(
-                name=metric_name,
-                documentation="OpenSearch dashboards load average 5m",
-                value=value,
-            )
-        case _:
-            return None
-
-
-def _get_load_15m(api_metrics: dict) -> Optional[Metric]:
-    """Get the OpenSearch dashboards load average 15m.
-
-    Args:
-        api_metrics (dict): Response from the API
-
-    Returns:
-        Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
-    """
-    metric_name = f"{METRICS_PREFIX}load15m"
-    match api_metrics:
-        case {"metrics": {"os": {"load": {"15m": value}}}}:
-            return GaugeMetricFamily(
-                name=metric_name,
-                documentation="OpenSearch dashboards load average 15m",
-                value=value,
-            )
-        case _:
-            return None
-
-
-def _get_os_mem_total(api_metrics: dict) -> Optional[Metric]:
+def _get_os_mem(api_metrics: dict, memory: Memory) -> Optional[Metric]:
     """Get the OpenSearch dashboards memory total in bytes.
 
     Args:
         api_metrics (dict): Response from the API
+        memory (Memory): Possible memory types from the API
 
     Returns:
         Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
     """
-    metric_name = f"{METRICS_PREFIX}os_mem_total"
+    mem_value = memory.value
+    prefix = mem_value.split("_")[0]
+    metric_name = f"{METRICS_PREFIX}os_mem_{prefix}"
     match api_metrics:
-        case {"metrics": {"os": {"memory": {"total_in_bytes": value}}}}:
+        case {"metrics": {"os": {"memory": mem_values}}} if mem_value in mem_values:
             return GaugeMetricFamily(
                 name=metric_name,
-                documentation="OpenSearch dashboards memory total in bytes",
-                value=value,
+                documentation=f"OpenSearch dashboards memory {prefix} in bytes",
+                value=mem_values[mem_value],
             )
         case _:
             return None
 
 
-def _get_os_mem_free(api_metrics: dict) -> Optional[Metric]:
-    """Get the free memory in bytes from the dashboard machine.
+def _get_resp_time(api_metrics: dict, response: Response) -> Optional[Metric]:
+    """Get the OpenSearch dashboards response time in milliseconds.
 
     Args:
         api_metrics (dict): Response from the API
+        response (Response): Possible response time types from the API
 
     Returns:
         Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
     """
-    metric_name = f"{METRICS_PREFIX}os_mem_free"
+    response_value = response.value
+    prefix = response_value.split("_")[0]
+    metric_name = f"{METRICS_PREFIX}resp_time_{prefix}"
     match api_metrics:
-        case {"metrics": {"os": {"memory": {"free_in_bytes": value}}}}:
+        case {"metrics": {"response_times": response_values}} if response_value in response_values:
             return GaugeMetricFamily(
                 name=metric_name,
-                documentation="OpenSearch dashboards memory free in bytes",
-                value=value,
+                documentation=f"OpenSearch dashboards {prefix} response time in milliseconds",
+                value=response_values[response_value],
             )
         case _:
             return None
 
 
-def _get_os_mem_used(api_metrics: dict) -> Optional[Metric]:
-    """Get the memory used in bytes from the dashboard machine.
+def _get_req(api_metrics: dict, req: RequestsCount) -> Optional[Metric]:
+    """Get the OpenSearch dashboards request count.
 
     Args:
         api_metrics (dict): Response from the API
+        req (RequestsCount): Possible request types from the API
 
     Returns:
         Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
     """
-    metric_name = f"{METRICS_PREFIX}os_mem_used"
+    requests_value = req.value
+    metric_name = f"{METRICS_PREFIX}req_{requests_value}"
     match api_metrics:
-        case {"metrics": {"os": {"memory": {"used_in_bytes": value}}}}:
+        case {"metrics": {"requests": requests_values}} if requests_value in requests_values:
             return GaugeMetricFamily(
                 name=metric_name,
-                documentation="OpenSearch dashboards memory used in bytes",
-                value=value,
-            )
-        case _:
-            return None
-
-
-def _get_resp_time_avg(api_metrics: dict) -> Optional[Metric]:
-    """Get the OpenSearch dashboards average response time in milliseconds.
-
-    Args:
-        api_metrics (dict): Response from the API
-
-    Returns:
-        Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
-    """
-    metric_name = f"{METRICS_PREFIX}resp_time_avg"
-    match api_metrics:
-        case {"metrics": {"response_times": {"avg_in_millis": value}}}:
-            return GaugeMetricFamily(
-                name=metric_name,
-                documentation="OpenSearch dashboards average response time in milliseconds",
-                value=value,
-            )
-        case _:
-            return None
-
-
-def _get_resp_time_max(api_metrics: dict) -> Optional[Metric]:
-    """Get the OpenSearch dashboards maximum response time in milliseconds.
-
-    Args:
-        api_metrics (dict): Response from the API
-
-    Returns:
-        Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
-    """
-    metric_name = f"{METRICS_PREFIX}resp_time_max"
-    match api_metrics:
-        case {"metrics": {"response_times": {"max_in_millis": value}}}:
-            return GaugeMetricFamily(
-                name=metric_name,
-                documentation="OpenSearch dashboards maximum response time in milliseconds",
-                value=value,
-            )
-        case _:
-            return None
-
-
-def _get_req_disconnects(api_metrics: dict) -> Optional[Metric]:
-    """Get the OpenSearch dashboards request disconnections count.
-
-    Args:
-        api_metrics (dict): Response from the API
-
-    Returns:
-        Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
-    """
-    metric_name = f"{METRICS_PREFIX}req_disconnects"
-    match api_metrics:
-        case {"metrics": {"requests": {"disconnects": value}}}:
-            return GaugeMetricFamily(
-                name=metric_name,
-                documentation="OpenSearch dashboards request disconnections count",
-                value=value,
-            )
-        case _:
-            return None
-
-
-def _get_req_total(api_metrics: dict) -> Optional[Metric]:
-    """Get the OpenSearch dashboards total request count.
-
-    Args:
-        api_metrics (dict): Response from the API
-
-    Returns:
-        Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
-    """
-    metric_name = f"{METRICS_PREFIX}req_total"
-    match api_metrics:
-        case {"metrics": {"requests": {"disconnects": value}}}:
-            return GaugeMetricFamily(
-                name=metric_name,
-                documentation="OpenSearch dashboards total request count",
-                value=value,
+                documentation=f"OpenSearch dashboards request {requests_value} count",
+                value=requests_values[requests_value],
             )
         case _:
             return None
