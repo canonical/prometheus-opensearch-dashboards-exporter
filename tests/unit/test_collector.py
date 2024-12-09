@@ -183,7 +183,7 @@ def test_get_resident_set_size(api_response, mock_gauge):
     )
 
 
-@pytest.mark.parametrize("heap", [collector.Heap.TOTAL, collector.Heap.USED, collector.Heap.LIMIT])
+@pytest.mark.parametrize("heap", [collector.Heap.TOTAL, collector.Heap.USED, collector.Heap.SIZE])
 def test_get_heap(api_response, mock_gauge, heap):
     prefix = heap.value.split("_")[0]
     expected_value = api_response["metrics"]["process"]["memory"]["heap"][heap.value]
@@ -202,7 +202,7 @@ def test_get_load(api_response, mock_gauge, load):
     expected_value = api_response["metrics"]["os"]["load"][load.value]
     collector._get_load(api_response, load)
     mock_gauge.assert_called_with(
-        name=f"opensearch_dashboards_load{load.value}",
+        name=f"opensearch_dashboards_load_{load.value}",
         documentation=f"OpenSearch dashboards load average {load.value}",
         value=expected_value,
     )
@@ -256,7 +256,7 @@ def test_get_req(api_response, mock_gauge, request_count):
         collector._get_up_time_metric(UNKNOWN_API_RESPONSE),
         collector._get_event_loop_delay_metric(UNKNOWN_API_RESPONSE),
         collector._get_resident_set_size(UNKNOWN_API_RESPONSE),
-        collector._get_heap(UNKNOWN_API_RESPONSE, collector.Heap.LIMIT),
+        collector._get_heap(UNKNOWN_API_RESPONSE, collector.Heap.SIZE),
         collector._get_load(UNKNOWN_API_RESPONSE, collector.Load.ONE_M),
         collector._get_os_mem(UNKNOWN_API_RESPONSE, collector.Memory.TOTAL),
         collector._get_resp_time(UNKNOWN_API_RESPONSE, collector.Response.AVG),

@@ -45,12 +45,17 @@ pytest = "^8.3.4"
 coverage = {extras = ["toml"], version = "^7.6.8"}
 pytest-cov = "^6.0.0"
 
+
+[tool.poetry.group.func.dependencies]
+pytest = "^8.3.4"
+requests = "^2.32.3"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.coverage.run]
-source = ["src", "tests"]
+source = ["src", "tests/unit"]
 relative_files = true
 branch = true
 

@@ -34,7 +34,7 @@ class Heap(Enum):
 
     USED = "used_in_bytes"
     TOTAL = "total_in_bytes"
-    LIMIT = "size_limit"
+    SIZE = "size_limit"
 
 
 class Load(Enum):
@@ -118,7 +118,7 @@ class DashBoardsCollector(Collector):
             ("event_loop_delay", _get_event_loop_delay_metric(api_metrics)),
             ("heap_total", _get_heap(api_metrics, Heap.TOTAL)),
             ("heap_used", _get_heap(api_metrics, Heap.USED)),
-            ("heap_limit", _get_heap(api_metrics, Heap.LIMIT)),
+            ("heap_size", _get_heap(api_metrics, Heap.SIZE)),
             ("re_set_size", _get_resident_set_size(api_metrics)),
             ("load_1m", _get_load(api_metrics, Load.ONE_M)),
             ("load_5m", _get_load(api_metrics, Load.FIVE_M)),
@@ -373,7 +373,7 @@ def _get_load(api_metrics: dict, load: Load) -> Optional[Metric]:
         Optional[Metric]: Prometheus Gauge metric if the metric exist in the API
     """
     load_value = load.value
-    metric_name = f"{METRICS_PREFIX}load{load_value}"
+    metric_name = f"{METRICS_PREFIX}load_{load_value}"
     match api_metrics:
         case {"metrics": {"os": {"load": load_values}}} if load_value in load_values:
             return GaugeMetricFamily(
