@@ -6,12 +6,16 @@ import argparse
 import logging
 import os
 import sys
+from typing import Iterable
 from wsgiref.simple_server import make_server
+from wsgiref.types import StartResponse, WSGIEnvironment
 
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
 
 from src.collector import Config, DashBoardsCollector
+
+APP = make_wsgi_app()
 
 
 def setup_logging() -> None:
@@ -55,6 +59,28 @@ def parse_command_line(args: list[str]) -> argparse.Namespace:
     return parser.parse_args(args)
 
 
+def metrics_app(environ: WSGIEnvironment, start_response: StartResponse) -> Iterable[bytes]:
+    """Create the WSGI app to respond at the /metrics path
+
+    Args:
+        environ (WSGIEnvironment): environment variable defined by the WSGI specification.
+        It contains the path part of the URL requested by the client
+        start_response (StartResponse): Function that is provided by the WSGI server and is used
+        by the WSGI application to start the HTTP response
+
+    Returns:
+        Iterable[bytes]: Response of the request. In the case prometheus metrics at /metrics and
+        404 Not found for other paths
+    """
+    path: str = environ.get("PATH_INFO", "")
+
+    if path == "/metrics":
+        return APP(environ, start_response)
+
+    start_response("404 Not Found", [("Content-Type", "text/plain")])
+    return [b"404 Not Found"]
+
+
 def main() -> None:
     """Enter the exporter application"""
     args = parse_command_line(sys.argv[1:])
@@ -64,9 +90,8 @@ def main() -> None:
 
     config = Config(args.url, user, password)
     REGISTRY.register(DashBoardsCollector(config))
-    app = make_wsgi_app()
-    httpd = make_server("", args.port, app)
-    httpd.serve_forever()
+    with make_server("", args.port, metrics_app) as httpd:
+        httpd.serve_forever()
 
 
 if __name__ == "__main__":  # pragma: no cover

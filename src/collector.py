@@ -85,16 +85,14 @@ class DashBoardsCollector(Collector):
             documentation="Whether the data source is reachable (1 for up, 0 for down)",
         )
         try:
-            if api_metrics := collect_api_status(self.config):
-                api_up.add_metric([], 1)
-                for metric in self.metrics(api_metrics):
-                    description, value = metric
-                    if value:
-                        yield value
-                    else:
-                        logger.error("It was not possible to get the metric: %s", description)
-            else:
-                api_up.add_metric([], 0)
+            api_metrics = collect_api_status(self.config)
+            api_up.add_metric([], 1 if api_metrics else 0)
+            for metric in self.metrics(api_metrics):
+                description, value = metric
+                if value:
+                    yield value
+                else:
+                    logger.error("It was not possible to get the metric: %s", description)
 
         except Exception as e:  # pylint: disable=broad-except
             logger.error("An unexpected error occurred: %s", e)
@@ -111,26 +109,28 @@ class DashBoardsCollector(Collector):
         Returns:
             list[tuple[str, Optional[Metric]]]: Prometheus Gauge metrics of the dashboards
         """
-        return [
-            ("status", _get_overall_status_metric(api_metrics)),
-            ("current_connections", _get_current_connections_metric(api_metrics)),
-            ("up_time", _get_up_time_metric(api_metrics)),
-            ("event_loop_delay", _get_event_loop_delay_metric(api_metrics)),
-            ("heap_total", _get_heap(api_metrics, Heap.TOTAL)),
-            ("heap_used", _get_heap(api_metrics, Heap.USED)),
-            ("heap_size", _get_heap(api_metrics, Heap.SIZE)),
-            ("re_set_size", _get_resident_set_size(api_metrics)),
-            ("load_1m", _get_load(api_metrics, Load.ONE_M)),
-            ("load_5m", _get_load(api_metrics, Load.FIVE_M)),
-            ("load_15m", _get_load(api_metrics, Load.FIFTEEN_M)),
-            ("os_mem_total", _get_os_mem(api_metrics, Memory.TOTAL)),
-            ("os_mem_free", _get_os_mem(api_metrics, Memory.FREE)),
-            ("os_mem_used", _get_os_mem(api_metrics, Memory.USED)),
-            ("resp_time_avg", _get_resp_time(api_metrics, Response.AVG)),
-            ("resp_time_max", _get_resp_time(api_metrics, Response.MAX)),
-            ("req_disconnects", _get_req(api_metrics, RequestsCount.DISCONNECTS)),
-            ("req_total", _get_req(api_metrics, RequestsCount.TOTAL)),
-        ] + [("statuses", status) for status in _get_statuses_metrics(api_metrics)]
+        if api_metrics:
+            return [
+                ("status", _get_overall_status_metric(api_metrics)),
+                ("current_connections", _get_current_connections_metric(api_metrics)),
+                ("up_time", _get_up_time_metric(api_metrics)),
+                ("event_loop_delay", _get_event_loop_delay_metric(api_metrics)),
+                ("heap_total", _get_heap(api_metrics, Heap.TOTAL)),
+                ("heap_used", _get_heap(api_metrics, Heap.USED)),
+                ("heap_size", _get_heap(api_metrics, Heap.SIZE)),
+                ("re_set_size", _get_resident_set_size(api_metrics)),
+                ("load_1m", _get_load(api_metrics, Load.ONE_M)),
+                ("load_5m", _get_load(api_metrics, Load.FIVE_M)),
+                ("load_15m", _get_load(api_metrics, Load.FIFTEEN_M)),
+                ("os_mem_total", _get_os_mem(api_metrics, Memory.TOTAL)),
+                ("os_mem_free", _get_os_mem(api_metrics, Memory.FREE)),
+                ("os_mem_used", _get_os_mem(api_metrics, Memory.USED)),
+                ("resp_time_avg", _get_resp_time(api_metrics, Response.AVG)),
+                ("resp_time_max", _get_resp_time(api_metrics, Response.MAX)),
+                ("req_disconnects", _get_req(api_metrics, RequestsCount.DISCONNECTS)),
+                ("req_total", _get_req(api_metrics, RequestsCount.TOTAL)),
+            ] + [("statuses", status) for status in _get_statuses_metrics(api_metrics)]
+        return []
 
 
 def collect_api_status(config: Config) -> dict:

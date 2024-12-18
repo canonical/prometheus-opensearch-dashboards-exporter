@@ -33,7 +33,7 @@ prometheus-opensearch-dashboards-exporter  http(s)://<IP>:5601
 
 After that, it's possible to check the metrics:
 ```
- curl http://localhost:9684
+ curl http://localhost:9684/metrics
 ```
 
 ![Example of output](images/opensearch_dashboards_prometheus.png)
@@ -52,7 +52,7 @@ The metrics exposed by this Exporter are the following.
 
 | Metric                                         | Description                                                                                                                                | Type  |
 | -----------------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------ | ----- |
-| `opensearch_dashboards_status`                 | Dashboards overall status. Values `0`, `1`, `2`, `-1` are for Green, Yellow, Red and Unknown, respectively                                 | Gauge |
+| `opensearch_dashboards_status`                 | Dashboards overall status. Values `0`, `1`, `2`, `-1` are for Green, Yellow, Red and Unknown, respectively. See the meaning of each color at the [docs](https://opensearch.org/docs/1.2/opensearch/rest-api/cluster-health/)                                 | Gauge |
 | `opensearch_dashboards_statuses`               | Dashboards granular status of plugins and core components. Values `0`, `1`, `2`, `-1` are for Green, Yellow, Red and Unknown, respectively | Gauge |
 | `opensearch_dashboards_concurrent_connections` | Dashboards Concurrent Connections                                                                                                          | Gauge |
 | `opensearch_dashboards_up_time`                | Dashboards uptime in milliseconds                                                                                                          | Gauge |

@@ -25,6 +25,11 @@ def test_dashboard_collector_metrics(api_response, mock_config):
     assert len(dashboards_collector.metrics(api_response)) == 20
 
 
+def test_dashboard_collector_metrics_empty_response(api_response, mock_config):
+    dashboards_collector = collector.DashBoardsCollector(mock_config)
+    assert dashboards_collector.metrics({}) == []
+
+
 def test_dashboard_collector_collect_success(mock_gauge, mock_collect_api_status, mock_config):
     dashboards_collector = collector.DashBoardsCollector(mock_config)
     collected = [metric for metric in dashboards_collector.collect()]
