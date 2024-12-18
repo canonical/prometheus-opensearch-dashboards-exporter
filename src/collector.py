@@ -80,25 +80,20 @@ class DashBoardsCollector(Collector):
         Yields:
             Generator[Metric]: the internal status metrics of status
         """
+        api_metrics = collect_api_status(self.config)
         api_up = GaugeMetricFamily(
             name=f"{METRICS_PREFIX}up",
             documentation="Whether the data source is reachable (1 for up, 0 for down)",
+            value=1 if api_metrics else 0,
         )
-        try:
-            api_metrics = collect_api_status(self.config)
-            api_up.add_metric([], 1 if api_metrics else 0)
-            for metric in self.metrics(api_metrics):
-                description, value = metric
-                if value:
-                    yield value
-                else:
-                    logger.error("It was not possible to get the metric: %s", description)
-
-        except Exception as e:  # pylint: disable=broad-except
-            logger.error("An unexpected error occurred: %s", e)
-            api_up.add_metric([], 0)
-
         yield api_up
+
+        for metric in self.metrics(api_metrics):
+            description, value = metric
+            if value:
+                yield value
+            else:
+                logger.error("It was not possible to get the metric: %s", description)
 
     def metrics(self, api_metrics: dict) -> list[tuple[str, Optional[Metric]]]:
         """Get the OpenSearch dashboard prometheus metrics.
@@ -206,10 +201,10 @@ def _get_status_value(status: dict[str, str]) -> float:
     Note that the this output value is to match the same behavior from the OpenSearch exporter.
 
     Args:
-        status (dict[str, str]): _description_
+        status (dict[str, str]): Status of the health of the cluster or plugins
 
     Returns:
-        int: _description_
+        float: status as a number representing the health.
     """
     match status:
         case {"state": "green"}:

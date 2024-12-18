@@ -39,7 +39,11 @@ def test_dashboard_collector_collect_success(mock_gauge, mock_collect_api_status
     assert len(collected) == 21
     mock_collect_api_status.assert_called_once_with(mock_config)
     # data source was reachable
-    mock_gauge.add_metric.assert_any_call([], 1)
+    mock_gauge.assert_any_call(
+        name=f"{collector.METRICS_PREFIX}up",
+        documentation="Whether the data source is reachable (1 for up, 0 for down)",
+        value=1,
+    )
 
 
 def test_dashboard_collector_collect_failed(mock_gauge, mock_collect_api_status, mock_config):
@@ -50,21 +54,11 @@ def test_dashboard_collector_collect_failed(mock_gauge, mock_collect_api_status,
 
     # just the metric that the service was not reachable returns
     assert len(collected) == 1
-    mock_gauge.add_metric.assert_called_once_with([], 0)
-
-
-@patch("src.collector.DashBoardsCollector.metrics")
-def test_dashboard_collector_collect_failed_exception(
-    mock_metrics, mock_gauge, mock_collect_api_status, mock_config
-):
-    dashboards_collector = collector.DashBoardsCollector(mock_config)
-    # during the metrics process an exception happens
-    mock_metrics.side_effect = Exception
-    collected = [metric for metric in dashboards_collector.collect()]
-
-    # just the metric that the service was not reachable returns
-    assert len(collected) == 1
-    mock_gauge.add_metric.assert_any_call([], 0)
+    mock_gauge.assert_any_call(
+        name=f"{collector.METRICS_PREFIX}up",
+        documentation="Whether the data source is reachable (1 for up, 0 for down)",
+        value=0,
+    )
 
 
 @patch("src.collector.logger")
@@ -81,8 +75,12 @@ def test_dashboard_collector_collect_metric_failed(
 
     [metric for metric in dashboards_collector.collect()]
 
-    mock_gauge.add_metric.assert_any_call([], 1)
     mock_log.error.assert_called_once()
+    mock_gauge.assert_any_call(
+        name=f"{collector.METRICS_PREFIX}up",
+        documentation="Whether the data source is reachable (1 for up, 0 for down)",
+        value=1,
+    )
 
 
 @patch("src.collector.requests.Session")
