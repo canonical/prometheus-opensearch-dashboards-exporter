@@ -52,22 +52,22 @@ The metrics exposed by this Exporter are the following.
 
 | Metric                                         | Description                                                                                                                                | Type  |
 | -----------------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------ | ----- |
-| `opensearch_dashboards_status`                 | Dashboards overall status. Values `0`, `1`, `2`, `-1` are for Green, Yellow, Red and Unknown, respectively. See the meaning of each color at the [docs](https://opensearch.org/docs/1.2/opensearch/rest-api/cluster-health/)                                 | Gauge |
-| `opensearch_dashboards_statuses`               | Dashboards granular status of plugins and core components. Values `0`, `1`, `2`, `-1` are for Green, Yellow, Red and Unknown, respectively | Gauge |
-| `opensearch_dashboards_concurrent_connections` | Dashboards Concurrent Connections                                                                                                          | Gauge |
-| `opensearch_dashboards_up_time`                | Dashboards uptime in milliseconds                                                                                                          | Gauge |
-| `opensearch_dashboards_event_loop_delay`       | Dashboards NodeJS Event Loop Delay in Milli Seconds                                                                                        | Gauge |
-| `opensearch_dashboards_heap_total`             | Dashboards Heap total used in bytes                                                                                                        | Gauge |
-| `opensearch_dashboards_heap_used`              | Dashboards Heap used in bytes                                                                                                              | Gauge |
-| `opensearch_dashboards_heap_size`              | Dashboards Heap size limit in bytes                                                                                                        | Gauge |
-| `opensearch_dashboards_re_set_size`            | Dashboards Resident Set Size in bytes                                                                                                      | Gauge |
-| `opensearch_dashboards_load_1m`                | Dashboards load average 1m                                                                                                                 | Gauge |
-| `opensearch_dashboards_load_5m`                | Dashboards load average 5m                                                                                                                 | Gauge |
-| `opensearch_dashboards_load_15m`               | Dashboards load average 15m                                                                                                                | Gauge |
-| `opensearch_dashboards_os_mem_total`           | Dashboards OS memory total in bytes                                                                                                        | Gauge |
-| `opensearch_dashboards_os_mem_free`            | Dashboards OS memory free in bytes                                                                                                         | Gauge |
-| `opensearch_dashboards_os_mem_used`            | Dashboards OS memory used in bytes                                                                                                         | Gauge |
-| `opensearch_dashboards_resp_time_avg`          | Dashboards average response time in milliseconds                                                                                           | Gauge |
-| `opensearch_dashboards_resp_time_max`          | Dashboards maximum response time in milliseconds                                                                                           | Gauge |
-| `opensearch_dashboards_req_disconnects`        | Dashboards request disconnections count                                                                                                    | Gauge |
-| `opensearch_dashboards_req_total`              | Dashboards total request count                                                                                                             | Gauge |
+| `opensearch_dashboards_status`                 | Overall status. Values `0`, `1`, `2`, `-1` are for Green, Yellow, Red and Unknown, respectively. See the meaning of each color at the [docs](https://opensearch.org/docs/1.2/opensearch/rest-api/cluster-health/)                                 | Gauge |
+| `opensearch_dashboards_statuses`               | Granular status of plugins and core components. Values `0`, `1`, `2`, `-1` are for Green, Yellow, Red and Unknown, respectively | Gauge |
+| `opensearch_dashboards_concurrent_connections` | Concurrent connections                                                                                                          | Gauge |
+| `opensearch_dashboards_up_time`                | Uptime in milliseconds                                                                                                          | Gauge |
+| `opensearch_dashboards_event_loop_delay`       | NodeJS Event Loop Delay in Milli Seconds                                                                                        | Gauge |
+| `opensearch_dashboards_heap_total`             | Heap total used in bytes                                                                                                        | Gauge |
+| `opensearch_dashboards_heap_used`              | Heap used in bytes                                                                                                              | Gauge |
+| `opensearch_dashboards_heap_size`              | Heap size limit in bytes                                                                                                        | Gauge |
+| `opensearch_dashboards_re_set_size`            | Resident Set Size in bytes                                                                                                      | Gauge |
+| `opensearch_dashboards_load_1m`                | Load average 1m                                                                                                                 | Gauge |
+| `opensearch_dashboards_load_5m`                | Load average 5m                                                                                                                 | Gauge |
+| `opensearch_dashboards_load_15m`               | Load average 15m                                                                                                                | Gauge |
+| `opensearch_dashboards_os_mem_total`           | OS memory total in bytes                                                                                                        | Gauge |
+| `opensearch_dashboards_os_mem_free`            | OS memory free in bytes                                                                                                         | Gauge |
+| `opensearch_dashboards_os_mem_used`            | OS memory used in bytes                                                                                                         | Gauge |
+| `opensearch_dashboards_resp_time_avg`          | Average response time in milliseconds                                                                                           | Gauge |
+| `opensearch_dashboards_resp_time_max`          | Maximum response time in milliseconds                                                                                           | Gauge |
+| `opensearch_dashboards_req_disconnects`        | Request disconnections count                                                                                                    | Gauge |
+| `opensearch_dashboards_req_total`              | Total request count                                                                                                             | Gauge |
