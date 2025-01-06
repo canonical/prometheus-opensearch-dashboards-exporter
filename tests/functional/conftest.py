@@ -18,8 +18,8 @@ from src.collector import (
 
 
 @pytest.fixture
-def mock_openstack_api_handler(api_response):
-    class MockOpenStackAPIHandler(BaseHTTPRequestHandler):
+def mock_opensearch_api_handler(api_response):
+    class MockOpenSearchAPIHandler(BaseHTTPRequestHandler):
         def do_GET(self):  # noqa: N802
             if self.path == API_STATUS_ENDPOINT:
                 response = api_response
@@ -31,12 +31,12 @@ def mock_openstack_api_handler(api_response):
             self.end_headers()
             self.wfile.write(json.dumps(response).encode("utf-8"))
 
-    return MockOpenStackAPIHandler
+    return MockOpenSearchAPIHandler
 
 
 @pytest.fixture
-def start_mock_server(mock_openstack_api_handler):
-    server = HTTPServer(("localhost", 5601), mock_openstack_api_handler)
+def start_mock_server(mock_opensearch_api_handler):
+    server = HTTPServer(("localhost", 5601), mock_opensearch_api_handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     yield server
