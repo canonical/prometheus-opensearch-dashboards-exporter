@@ -24,7 +24,7 @@ def test_setup_logging(caplog):
 @pytest.mark.parametrize(
     "command, expected_url, expected_port",
     [
-        (["--url", "http://10.12.21.8:5601","--port", "8080"], "http://10.12.21.8:5601", 8080),
+        (["--url", "http://10.12.21.8:5601", "--port", "8080"], "http://10.12.21.8:5601", 8080),
         # default port and url
         ([], "http://localhost:5601", 9684),
     ],
