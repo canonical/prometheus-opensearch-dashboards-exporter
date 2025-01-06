@@ -41,8 +41,9 @@ def parse_command_line(args: list[str]) -> argparse.Namespace:
         description=__doc__,
     )
     parser.add_argument(
-        "url",
+        "--url",
         type=str,
+        default="http://localhost:5601",
         help="The OpenSearch address to fetch metrics from. E.g: http(s)://<IP>:5601",
     )
     parser.add_argument(
@@ -52,7 +53,7 @@ def parse_command_line(args: list[str]) -> argparse.Namespace:
         help="The port number to the prometheus exporter to use (default: 9684)",
     )
 
-    if len(args) == 0 or (len(args) == 1 and args[0] == "help"):
+    if (len(args) == 1 and args[0] == "help"):
         parser.print_help()
         parser.exit()
 

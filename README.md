@@ -28,7 +28,7 @@ Identify the url of the `opensearch-dashboards` that you want to monitor, set th
 ```shell
 export OPENSEARCH_DASHBOARDS_USER="my-user"
 export OPENSEARCH_DASHBOARDS_PASSWORD="my-pass"
-prometheus-opensearch-dashboards-exporter  http(s)://<IP>:5601
+prometheus-opensearch-dashboards-exporter  --url=http(s)://<IP>:5601
 ```
 
 After that, it's possible to check the metrics:
@@ -42,7 +42,7 @@ After that, it's possible to check the metrics:
 By default the server will start at localhost on port `9684`, but it's possible to choose a different one using the `--port` flag. E.g:
 
 ```shell
-prometheus-opensearch-dashboards-exporter  http(s)://<IP>:5601 -p 9685
+prometheus-opensearch-dashboards-exporter --url http(s)://<IP>:5601 --port 9685
 ```
 
 

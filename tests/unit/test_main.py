@@ -24,9 +24,9 @@ def test_setup_logging(caplog):
 @pytest.mark.parametrize(
     "command, expected_url, expected_port",
     [
-        (["http://localhost:5601", "--port", "8080"], "http://localhost:5601", 8080),
-        # default port
-        (["https://localhost:5601"], "https://localhost:5601", 9684),
+        (["--url", "http://10.12.21.8:5601","--port", "8080"], "http://10.12.21.8:5601", 8080),
+        # default port and url
+        ([], "http://localhost:5601", 9684),
     ],
 )
 def test_parse_command_line(command, expected_url, expected_port):
@@ -35,7 +35,7 @@ def test_parse_command_line(command, expected_url, expected_port):
     assert args.port == expected_port
 
 
-@pytest.mark.parametrize("args", [[], ["-h"], ["--help"], ["help"]])
+@pytest.mark.parametrize("args", [["-h"], ["--help"], ["help"]])
 @patch(
     "src.main.argparse.ArgumentParser.print_help",
     autospec=True,
