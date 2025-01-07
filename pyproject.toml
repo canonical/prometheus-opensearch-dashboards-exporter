@@ -15,7 +15,7 @@ prometheus-opensearch-dashboards-exporter = "src.main:main"
 
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 prometheus-client = "^0.21.0"
 requests = "^2.32.3"
 
