@@ -1,7 +1,6 @@
 # Copyright 2024 Canonical Ltd.
 # See LICENSE file for licensing details.
 
-import json
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -19,19 +18,19 @@ UNKNOWN_API_RESPONSE = {
 
 
 def test_dashboard_collector_metrics(api_response, mock_config):
-    dashboards_collector = collector.DashBoardsCollector(mock_config)
+    dashboards_collector = collector.DashboardsCollector(mock_config)
 
     # the mocked response at dashboards_response.json is suppose to have 20 metrics
     assert len(dashboards_collector.metrics(api_response)) == 20
 
 
 def test_dashboard_collector_metrics_empty_response(api_response, mock_config):
-    dashboards_collector = collector.DashBoardsCollector(mock_config)
+    dashboards_collector = collector.DashboardsCollector(mock_config)
     assert dashboards_collector.metrics({}) == []
 
 
 def test_dashboard_collector_collect_success(mock_gauge, mock_collect_api_status, mock_config):
-    dashboards_collector = collector.DashBoardsCollector(mock_config)
+    dashboards_collector = collector.DashboardsCollector(mock_config)
     collected = [metric for metric in dashboards_collector.collect()]
 
     # the mocked response at dashboards_response.json is suppose to have 20 metrics + 1 metric if
@@ -47,7 +46,7 @@ def test_dashboard_collector_collect_success(mock_gauge, mock_collect_api_status
 
 
 def test_dashboard_collector_collect_failed(mock_gauge, mock_collect_api_status, mock_config):
-    dashboards_collector = collector.DashBoardsCollector(mock_config)
+    dashboards_collector = collector.DashboardsCollector(mock_config)
     # response from the API failed for some reason
     mock_collect_api_status.return_value = {}
     collected = [metric for metric in dashboards_collector.collect()]
@@ -62,11 +61,11 @@ def test_dashboard_collector_collect_failed(mock_gauge, mock_collect_api_status,
 
 
 @patch("src.collector.logger")
-@patch("src.collector.DashBoardsCollector.metrics")
+@patch("src.collector.DashboardsCollector.metrics")
 def test_dashboard_collector_collect_metric_failed(
     mock_metrics, mock_log, mock_gauge, mock_config, mock_collect_api_status
 ):
-    dashboards_collector = collector.DashBoardsCollector(mock_config)
+    dashboards_collector = collector.DashboardsCollector(mock_config)
     # during the metrics process one metric failed to process, in this case the up time
     mock_metrics.return_value = [
         ("opensearch_dashboards_status", mock_gauge),
@@ -87,10 +86,11 @@ def test_dashboard_collector_collect_metric_failed(
 def test_collect_api_status_success(mock_session, api_response, mock_config):
     mock_response = MagicMock()
     mock_response.status_code = 200
-    mock_response.text = json.dumps(api_response)
+    mock_response.json.return_value = api_response
     mock_session.return_value.__enter__.return_value.get.return_value = mock_response
 
     assert collector.collect_api_status(mock_config) == api_response
+    mock_response.raise_for_status.assert_called_once()
 
 
 @patch("src.collector.requests.Session")

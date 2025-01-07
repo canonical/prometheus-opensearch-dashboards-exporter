@@ -68,7 +68,7 @@ def test_metrics_app_other_path(path):
     assert main.metrics_app(mocked_environ, mocked_start_response) == [b"404 Not Found"]
 
 
-@patch("src.main.DashBoardsCollector")
+@patch("src.main.DashboardsCollector")
 @patch("src.main.REGISTRY")
 @patch("src.main.make_server")
 @patch("src.main.metrics_app")

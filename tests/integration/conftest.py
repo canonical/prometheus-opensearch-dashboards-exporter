@@ -13,7 +13,7 @@ from src.collector import (
     API_STATUS_ENDPOINT,
     METRICS_PREFIX,
     Config,
-    DashBoardsCollector,
+    DashboardsCollector,
 )
 
 
@@ -75,5 +75,5 @@ def wrong_prometheus_exporter(start_mock_server):
 
 @pytest.fixture
 def expected_metrics():
-    metrics = DashBoardsCollector(Config("", "", "")).metrics({"foo": "bar"})
+    metrics = DashboardsCollector(Config("", "", "")).metrics({"foo": "bar"})
     return {f"{METRICS_PREFIX}{metric[0]}" for metric in metrics}

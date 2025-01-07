@@ -13,7 +13,7 @@ from wsgiref.types import StartResponse, WSGIEnvironment
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
 
-from src.collector import Config, DashBoardsCollector
+from src.collector import Config, DashboardsCollector
 
 APP = make_wsgi_app()
 
@@ -90,7 +90,7 @@ def main() -> None:
     password = os.getenv("OPENSEARCH_DASHBOARDS_PASSWORD", "")
 
     config = Config(args.url, user, password)
-    REGISTRY.register(DashBoardsCollector(config))
+    REGISTRY.register(DashboardsCollector(config))
     with make_server("", args.port, metrics_app) as httpd:
         httpd.serve_forever()
 

@@ -2,11 +2,10 @@
 # See LICENSE file for licensing details.
 """OpenSearch Dashboards Collector."""
 
-import json
 import logging
 from dataclasses import dataclass
 from enum import Enum
-from typing import Generator, Optional
+from typing import Any, Generator, Optional
 
 import requests
 from prometheus_client.core import GaugeMetricFamily, Metric
@@ -38,7 +37,7 @@ class Heap(Enum):
 
 
 class Load(Enum):
-    """Possible heap types for the metrics"""
+    """Possible load types for the metrics"""
 
     ONE_M = "1m"
     FIVE_M = "5m"
@@ -67,7 +66,7 @@ class RequestsCount(Enum):
     TOTAL = "total"
 
 
-class DashBoardsCollector(Collector):
+class DashboardsCollector(Collector):
     """OpenSearch Dashboards Collector"""
 
     def __init__(self, config: Config) -> None:
@@ -88,14 +87,13 @@ class DashBoardsCollector(Collector):
         )
         yield api_up
 
-        for metric in self.metrics(api_metrics):
-            description, value = metric
+        for description, value in self.metrics(api_metrics):
             if value:
                 yield value
             else:
-                logger.error("It was not possible to get the metric: %s", description)
+                logger.error("Could not get the metric: %s", description)
 
-    def metrics(self, api_metrics: dict) -> list[tuple[str, Optional[Metric]]]:
+    def metrics(self, api_metrics: dict[str, Any]) -> list[tuple[str, Optional[Metric]]]:
         """Get the OpenSearch dashboard prometheus metrics.
 
         Args:
@@ -104,31 +102,31 @@ class DashBoardsCollector(Collector):
         Returns:
             list[tuple[str, Optional[Metric]]]: Prometheus Gauge metrics of the dashboards
         """
-        if api_metrics:
-            return [
-                ("status", _get_overall_status_metric(api_metrics)),
-                ("current_connections", _get_current_connections_metric(api_metrics)),
-                ("up_time", _get_up_time_metric(api_metrics)),
-                ("event_loop_delay", _get_event_loop_delay_metric(api_metrics)),
-                ("heap_total", _get_heap(api_metrics, Heap.TOTAL)),
-                ("heap_used", _get_heap(api_metrics, Heap.USED)),
-                ("heap_size", _get_heap(api_metrics, Heap.SIZE)),
-                ("re_set_size", _get_resident_set_size(api_metrics)),
-                ("load_1m", _get_load(api_metrics, Load.ONE_M)),
-                ("load_5m", _get_load(api_metrics, Load.FIVE_M)),
-                ("load_15m", _get_load(api_metrics, Load.FIFTEEN_M)),
-                ("os_mem_total", _get_os_mem(api_metrics, Memory.TOTAL)),
-                ("os_mem_free", _get_os_mem(api_metrics, Memory.FREE)),
-                ("os_mem_used", _get_os_mem(api_metrics, Memory.USED)),
-                ("resp_time_avg", _get_resp_time(api_metrics, Response.AVG)),
-                ("resp_time_max", _get_resp_time(api_metrics, Response.MAX)),
-                ("req_disconnects", _get_req(api_metrics, RequestsCount.DISCONNECTS)),
-                ("req_total", _get_req(api_metrics, RequestsCount.TOTAL)),
-            ] + [("statuses", status) for status in _get_statuses_metrics(api_metrics)]
-        return []
+        if not api_metrics:
+            return []
+        return [
+            ("status", _get_overall_status_metric(api_metrics)),
+            ("current_connections", _get_current_connections_metric(api_metrics)),
+            ("up_time", _get_up_time_metric(api_metrics)),
+            ("event_loop_delay", _get_event_loop_delay_metric(api_metrics)),
+            ("heap_total", _get_heap(api_metrics, Heap.TOTAL)),
+            ("heap_used", _get_heap(api_metrics, Heap.USED)),
+            ("heap_size", _get_heap(api_metrics, Heap.SIZE)),
+            ("re_set_size", _get_resident_set_size(api_metrics)),
+            ("load_1m", _get_load(api_metrics, Load.ONE_M)),
+            ("load_5m", _get_load(api_metrics, Load.FIVE_M)),
+            ("load_15m", _get_load(api_metrics, Load.FIFTEEN_M)),
+            ("os_mem_total", _get_os_mem(api_metrics, Memory.TOTAL)),
+            ("os_mem_free", _get_os_mem(api_metrics, Memory.FREE)),
+            ("os_mem_used", _get_os_mem(api_metrics, Memory.USED)),
+            ("resp_time_avg", _get_resp_time(api_metrics, Response.AVG)),
+            ("resp_time_max", _get_resp_time(api_metrics, Response.MAX)),
+            ("req_disconnects", _get_req(api_metrics, RequestsCount.DISCONNECTS)),
+            ("req_total", _get_req(api_metrics, RequestsCount.TOTAL)),
+        ] + [("statuses", status) for status in _get_statuses_metrics(api_metrics)]
 
 
-def collect_api_status(config: Config) -> dict:
+def collect_api_status(config: Config) -> dict[str, Any]:
     """Use the dashboard API to get the status of the dashboard.
 
     Args:
@@ -151,7 +149,7 @@ def collect_api_status(config: Config) -> dict:
                 timeout=5,
             )
         response.raise_for_status()
-        return json.loads(response.text)
+        return response.json()
     except HTTPError as e:
         logger.error(
             "Request to %s status code: %s response text %s.",

@@ -6,7 +6,7 @@ An exporter for OpenSearch Dashboards
 With [poetry](https://python-poetry.org/) installed, clone this repo and run:
 
 ```shell
-poetry init
+poetry install
 ```
 
 ```shell
