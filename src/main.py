@@ -6,9 +6,9 @@ import argparse
 import logging
 import os
 import sys
-from typing import Iterable
+from pathlib import Path
+from typing import Any, Iterable
 from wsgiref.simple_server import make_server
-from wsgiref.types import StartResponse, WSGIEnvironment
 
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
@@ -53,21 +53,17 @@ def parse_command_line(args: list[str]) -> argparse.Namespace:
         help="The port number to the prometheus exporter to use (default: 9684)",
     )
 
-    if len(args) == 1 and args[0] == "help":
-        parser.print_help()
-        parser.exit()
-
     return parser.parse_args(args)
 
 
-def metrics_app(environ: WSGIEnvironment, start_response: StartResponse) -> Iterable[bytes]:
+def metrics_app(environ: dict[str, Any], start_response: Any) -> Iterable[bytes]:
     """Create the WSGI app to respond at the /metrics path
 
     Args:
-        environ (WSGIEnvironment): environment variable defined by the WSGI specification.
+        environ (dict[str, Any]): environment variable defined by the WSGI specification.
         It contains the path part of the URL requested by the client
-        start_response (StartResponse): Function that is provided by the WSGI server and is used
-        by the WSGI application to start the HTTP response
+        start_response (Any): Function that is provided by the WSGI server
+        and is used by the WSGI application to start the HTTP response
 
     Returns:
         Iterable[bytes]: Response of the request. In the case prometheus metrics at /metrics and
@@ -77,6 +73,15 @@ def metrics_app(environ: WSGIEnvironment, start_response: StartResponse) -> Iter
 
     if path == "/metrics":
         return APP(environ, start_response)
+
+    if path == "/":
+        html_file_path = Path(__file__).parent / "index.html"
+        if html_file_path.exists():
+            start_response("200 OK", [("Content-Type", "text/html")])
+            return [html_file_path.read_text().encode("utf-8")]
+        else:
+            start_response("500 Internal Error", [("Content-Type", "text/plain")])
+            return [b"500 HTML Page Not Found"]
 
     start_response("404 Not Found", [("Content-Type", "text/plain")])
     return [b"404 Not Found"]

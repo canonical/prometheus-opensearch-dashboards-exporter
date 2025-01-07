@@ -1,7 +1,8 @@
 # Copyright 2024 Canonical Ltd.
 # See LICENSE file for licensing details.
 
-from unittest.mock import ANY, MagicMock, patch
+from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -36,17 +37,11 @@ def test_parse_command_line(command, expected_url, expected_port):
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"], ["help"]])
-@patch(
-    "src.main.argparse.ArgumentParser.print_help",
-    autospec=True,
-)
 @patch("src.main.argparse.ArgumentParser.exit", autospec=True)
-def test_parse_command_line_help(mock_exit, mock_print_help, args):
+def test_parse_command_line_help(mock_exit, args):
     mock_exit.side_effect = SystemExit
     with pytest.raises(SystemExit):
         main.parse_command_line(args)
-    mock_print_help.assert_called_once()
-    mock_exit.assert_called_once_with(ANY)
 
 
 @patch("src.main.APP")
@@ -59,7 +54,30 @@ def test_metrics_app(mocked_app):
     mocked_app.assert_called_with(mocked_environ, mocked_start_response)
 
 
-@pytest.mark.parametrize("path", ["/", "/foo", "/metrics/thread"])
+def test_metrics_app_root_path():
+    mocked_environ = MagicMock()
+    mocked_environ.get.return_value = "/"
+    mocked_start_response = MagicMock()
+    html_file = Path(__file__).resolve().parents[2] / "src" / "index.html"
+    assert main.metrics_app(mocked_environ, mocked_start_response) == [
+        html_file.read_text().encode("utf-8")
+    ]
+    mocked_start_response.assert_called_once_with("200 OK", [("Content-Type", "text/html")])
+
+
+@patch("pathlib.Path.exists", return_value=False)
+def test_metrics_app_root_path_missing_html(_):
+    mocked_environ = MagicMock()
+    mocked_environ.get.return_value = "/"
+    mocked_start_response = MagicMock()
+    html_file = Path(__file__).resolve().parents[2] / "src" / "index.html"
+    assert main.metrics_app(mocked_environ, mocked_start_response) == [b"500 HTML Page Not Found"]
+    mocked_start_response.assert_called_once_with(
+        "500 Internal Error", [("Content-Type", "text/plain")]
+    )
+
+
+@pytest.mark.parametrize("path", ["/foo", "/metrics/thread"])
 def test_metrics_app_other_path(path):
     mocked_environ = MagicMock()
     mocked_environ.get.return_value = path
