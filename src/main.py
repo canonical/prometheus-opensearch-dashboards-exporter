@@ -37,8 +37,8 @@ def parse_command_line(args: list[str]) -> argparse.Namespace:
         argparse.Namespace: Command line arguments.
     """
     parser = argparse.ArgumentParser(
-        prog=__package__,
-        description=__doc__,
+        prog="opensearch_dashboards_exporter",
+        description="Prometheus Exporter for OpenSearch Dashboards",
     )
     parser.add_argument(
         "--url",
