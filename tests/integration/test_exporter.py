@@ -28,7 +28,7 @@ def test_exporter_failing_export_metrics(wrong_prometheus_exporter, expected_met
 
 def test_exporter_wrong_path(prometheus_exporter):
     # Prometheus server is not able to fetch the OpenSearch Dashboards metrics
-    response = requests.get("http://localhost:9684")
+    response = requests.get("http://localhost:9684/foo")
 
     assert response.status_code == 404
     assert "404 Not Found" in response.text

@@ -78,10 +78,10 @@ def metrics_app(environ: dict[str, Any], start_response: Any) -> Iterable[bytes]
         html_file_path = Path(__file__).parent / "index.html"
         if html_file_path.exists():
             start_response("200 OK", [("Content-Type", "text/html")])
-            return [html_file_path.read_text().encode("utf-8")]
-        else:
-            start_response("500 Internal Error", [("Content-Type", "text/plain")])
-            return [b"500 HTML Page Not Found"]
+            return [html_file_path.read_bytes()]
+
+        start_response("500 Internal Error", [("Content-Type", "text/plain")])
+        return [b"500 HTML Page Not Found"]
 
     start_response("404 Not Found", [("Content-Type", "text/plain")])
     return [b"404 Not Found"]

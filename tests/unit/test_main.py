@@ -59,9 +59,7 @@ def test_metrics_app_root_path():
     mocked_environ.get.return_value = "/"
     mocked_start_response = MagicMock()
     html_file = Path(__file__).resolve().parents[2] / "src" / "index.html"
-    assert main.metrics_app(mocked_environ, mocked_start_response) == [
-        html_file.read_text().encode("utf-8")
-    ]
+    assert main.metrics_app(mocked_environ, mocked_start_response) == [html_file.read_bytes()]
     mocked_start_response.assert_called_once_with("200 OK", [("Content-Type", "text/html")])
 
 
@@ -70,7 +68,6 @@ def test_metrics_app_root_path_missing_html(_):
     mocked_environ = MagicMock()
     mocked_environ.get.return_value = "/"
     mocked_start_response = MagicMock()
-    html_file = Path(__file__).resolve().parents[2] / "src" / "index.html"
     assert main.metrics_app(mocked_environ, mocked_start_response) == [b"500 HTML Page Not Found"]
     mocked_start_response.assert_called_once_with(
         "500 Internal Error", [("Content-Type", "text/plain")]

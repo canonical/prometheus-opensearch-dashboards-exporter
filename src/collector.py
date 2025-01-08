@@ -5,7 +5,7 @@
 import logging
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Generator, Optional
+from typing import Any, Generator, Optional, Sequence
 
 import requests
 from prometheus_client.core import GaugeMetricFamily, Metric
@@ -196,7 +196,7 @@ def _get_status_value(status: dict[str, str]) -> float:
     If the cluster is red, it will return 2
     If the metric is unknown, it will return -1
 
-    Note that the this output value is to match the same behavior from the OpenSearch exporter.
+    Note that this output value is to match the same behavior from the OpenSearch exporter.
 
     Args:
         status (dict[str, str]): Status of the health of the cluster or plugins
@@ -215,14 +215,14 @@ def _get_status_value(status: dict[str, str]) -> float:
             return -1
 
 
-def _get_statuses_metrics(api_metrics: dict) -> list[Metric]:
+def _get_statuses_metrics(api_metrics: dict) -> Sequence[Metric]:
     """Get the OpenSearch dashboards granular state of plugins and core components.
 
     Args:
         api_metrics (dict): Response from the API
 
     Returns:
-        Optional[list[Metric]]: Prometheus Gauge metrics if the statuses exist in the API
+        Sequence[Metric]: Prometheus Gauge metrics if the statuses exist in the API
     """
     metric_name = f"{METRICS_PREFIX}statuses"
     statuses_metrics = []
