@@ -54,8 +54,11 @@ jobs:
     - name: Run lint checkers
       run: tox -e unit
 
-  func:
-    name: Functional tests
+  integration-test:
+    name: Integration tests
+    needs:
+      - lint
+      - unit-test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -70,4 +73,4 @@ jobs:
         pipx install tox
         pipx install poetry
     - name: Run lint checkers
-      run: tox -e func
+      run: tox -e integration

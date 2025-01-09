@@ -50,7 +50,7 @@ coverage = {extras = ["toml"], version = "^7.6.8"}
 pytest-cov = "^6.0.0"
 
 
-[tool.poetry.group.func.dependencies]
+[tool.poetry.group.integration.dependencies]
 pytest = "^8.3.4"
 requests = "^2.32.3"
 
