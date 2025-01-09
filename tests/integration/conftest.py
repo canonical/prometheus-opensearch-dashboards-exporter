@@ -9,7 +9,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import pytest
 
-from src.collector import (
+from prometheus_opensearch_dashboards_exporter.src.collector import (
     API_STATUS_ENDPOINT,
     METRICS_PREFIX,
     Config,
@@ -47,7 +47,7 @@ def start_mock_server(mock_opensearch_api_handler):
 def prometheus_exporter(start_mock_server):
     # Start the Prometheus exporter
     process = subprocess.Popen(
-        ["python3", "./src/main.py"],
+        ["python3", "prometheus_opensearch_dashboards_exporter/src/main.py"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
@@ -62,7 +62,12 @@ def prometheus_exporter(start_mock_server):
 def wrong_prometheus_exporter(start_mock_server):
     # Start a wrong Prometheus exporter that won't be able to query because of tls
     process = subprocess.Popen(
-        ["python3", "./src/main.py", "--url", "https://localhost:5601"],
+        [
+            "python3",
+            "prometheus_opensearch_dashboards_exporter/src/main.py",
+            "--url",
+            "https://localhost:5601",
+        ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )

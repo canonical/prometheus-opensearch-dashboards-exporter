@@ -6,15 +6,14 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src import main
-from src.main import logging
+from prometheus_opensearch_dashboards_exporter.src import main
 
 
 def test_setup_logging(caplog):
     main.setup_logging()
 
-    with caplog.at_level(logging.INFO):
-        logging.info("Test log message")
+    with caplog.at_level(main.logging.INFO):
+        main.logging.info("Test log message")
 
     assert len(caplog.records) == 1
     log_record = caplog.records[0]
@@ -37,14 +36,17 @@ def test_parse_command_line(command, expected_url, expected_port):
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"], ["help"]])
-@patch("src.main.argparse.ArgumentParser.exit", autospec=True)
+@patch(
+    "prometheus_opensearch_dashboards_exporter.src.main.argparse.ArgumentParser.exit",
+    autospec=True,
+)
 def test_parse_command_line_help(mock_exit, args):
     mock_exit.side_effect = SystemExit
     with pytest.raises(SystemExit):
         main.parse_command_line(args)
 
 
-@patch("src.main.APP")
+@patch("prometheus_opensearch_dashboards_exporter.src.main.APP")
 def test_metrics_app(mocked_app):
     mocked_environ = MagicMock()
     mocked_environ.get.return_value = "/metrics"
@@ -58,7 +60,10 @@ def test_metrics_app_root_path():
     mocked_environ = MagicMock()
     mocked_environ.get.return_value = "/"
     mocked_start_response = MagicMock()
-    html_file = Path(__file__).resolve().parents[2] / "src" / "index.html"
+    html_file = (
+        Path(__file__).resolve().parents[2]
+        / "prometheus_opensearch_dashboards_exporter/src/index.html"
+    )
     assert main.metrics_app(mocked_environ, mocked_start_response) == [html_file.read_bytes()]
     mocked_start_response.assert_called_once_with("200 OK", [("Content-Type", "text/html")])
 
@@ -83,12 +88,12 @@ def test_metrics_app_other_path(path):
     assert main.metrics_app(mocked_environ, mocked_start_response) == [b"404 Not Found"]
 
 
-@patch("src.main.DashboardsCollector")
-@patch("src.main.REGISTRY")
-@patch("src.main.make_server")
-@patch("src.main.metrics_app")
-@patch("src.main.setup_logging")
-@patch("src.main.parse_command_line")
+@patch("prometheus_opensearch_dashboards_exporter.src.main.DashboardsCollector")
+@patch("prometheus_opensearch_dashboards_exporter.src.main.REGISTRY")
+@patch("prometheus_opensearch_dashboards_exporter.src.main.make_server")
+@patch("prometheus_opensearch_dashboards_exporter.src.main.metrics_app")
+@patch("prometheus_opensearch_dashboards_exporter.src.main.setup_logging")
+@patch("prometheus_opensearch_dashboards_exporter.src.main.parse_command_line")
 def test_main(
     mock_cli, mock_setup_logging, mock_metrics_app, mock_server, mock_registry, mock_collector
 ):

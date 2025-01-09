@@ -1,23 +1,27 @@
-[tool.poetry]
+[project]
 name = "prometheus-opensearch-dashboards-exporter"
 version = "0.1.0"
 description = "An exporter for OpenSearch Dashboards"
-authors = ["Gabriel Cocenza <gabriel.cocenza@canonical.com>"]
-license = "Apache License"
+authors = [
+    {name = "Gabriel Cocenza",email = "gabriel.cocenza@canonical.com"}
+]
 readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache License"
 packages = [
-    { include = "src" }
+    { include = "prometheus_opensearch_dashboards_exporter" }
+]
+dependencies = [
+    "prometheus-client==0.21.1",
+    "requests==2.32.3",
 ]
 
+[project.scripts]
+prometheus-opensearch-dashboards-exporter = "prometheus_opensearch_dashboards_exporter.src.main:main"
 
-[tool.poetry.scripts]
-prometheus-opensearch-dashboards-exporter = "src.main:main"
-
-
-[tool.poetry.dependencies]
-python = "^3.10"
-prometheus-client = "^0.21.0"
-requests = "^2.32.3"
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry.group.format.dependencies]
@@ -50,12 +54,14 @@ pytest-cov = "^6.0.0"
 pytest = "^8.3.4"
 requests = "^2.32.3"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+requests = "^2.32.3"
+prometheus-client = "^0.21.1"
+
 
 [tool.coverage.run]
-source = ["src", "tests/unit"]
+source = ["prometheus_opensearch_dashboards_exporter", "tests/unit"]
 relative_files = true
 branch = true
 

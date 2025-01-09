@@ -13,7 +13,10 @@ from wsgiref.simple_server import make_server
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
 
-from src.collector import Config, DashboardsCollector
+from prometheus_opensearch_dashboards_exporter.src.collector import (
+    Config,
+    DashboardsCollector,
+)
 
 APP = make_wsgi_app()
 
@@ -37,7 +40,7 @@ def parse_command_line(args: list[str]) -> argparse.Namespace:
         argparse.Namespace: Command line arguments.
     """
     parser = argparse.ArgumentParser(
-        prog="opensearch_dashboards_exporter",
+        prog="prometheus-opensearch-dashboards-exporter",
         description="Prometheus Exporter for OpenSearch Dashboards",
     )
     parser.add_argument(

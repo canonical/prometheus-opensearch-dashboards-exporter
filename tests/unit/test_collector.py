@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src import collector
+from prometheus_opensearch_dashboards_exporter.src import collector
 
 # simulate a complete change in the API
 UNKNOWN_API_RESPONSE = {
@@ -60,8 +60,8 @@ def test_dashboard_collector_collect_failed(mock_gauge, mock_collect_api_status,
     )
 
 
-@patch("src.collector.logger")
-@patch("src.collector.DashboardsCollector.metrics")
+@patch("prometheus_opensearch_dashboards_exporter.src.collector.logger")
+@patch("prometheus_opensearch_dashboards_exporter.src.collector.DashboardsCollector.metrics")
 def test_dashboard_collector_collect_metric_failed(
     mock_metrics, mock_log, mock_gauge, mock_config, mock_collect_api_status
 ):
@@ -82,7 +82,7 @@ def test_dashboard_collector_collect_metric_failed(
     )
 
 
-@patch("src.collector.requests.Session")
+@patch("prometheus_opensearch_dashboards_exporter.src.collector.requests.Session")
 def test_collect_api_status_success(mock_session, api_response, mock_config):
     mock_response = MagicMock()
     mock_response.status_code = 200
@@ -93,8 +93,8 @@ def test_collect_api_status_success(mock_session, api_response, mock_config):
     mock_response.raise_for_status.assert_called_once()
 
 
-@patch("src.collector.requests.Session")
-@patch("src.collector.logger")
+@patch("prometheus_opensearch_dashboards_exporter.src.collector.requests.Session")
+@patch("prometheus_opensearch_dashboards_exporter.src.collector.logger")
 def test_collect_api_status_http_error(mock_logger, mock_session, mock_config):
     mock_response = MagicMock()
     mock_response.raise_for_status.side_effect = collector.HTTPError(
@@ -107,8 +107,8 @@ def test_collect_api_status_http_error(mock_logger, mock_session, mock_config):
 
 
 @pytest.mark.parametrize("exception", [collector.Timeout, collector.RequestException])
-@patch("src.collector.requests.Session")
-@patch("src.collector.logger")
+@patch("prometheus_opensearch_dashboards_exporter.src.collector.requests.Session")
+@patch("prometheus_opensearch_dashboards_exporter.src.collector.logger")
 def test_collect_api_status_other_errors(mock_logger, mock_session, mock_config, exception):
     mock_session.return_value.__enter__.return_value.get.side_effect = exception
 
