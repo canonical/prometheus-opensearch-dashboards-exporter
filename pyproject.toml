@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache License"
 packages = [
-    { include = "prometheus_opensearch_dashboards_exporter" }
+    {  include = "prometheus_opensearch_dashboards_exporter", from = "src/prometheus_opensearch_dashboards_exporter" }
 ]
 dependencies = [
     "prometheus-client==0.21.1",
@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-prometheus-opensearch-dashboards-exporter = "prometheus_opensearch_dashboards_exporter.src.main:main"
+prometheus-opensearch-dashboards-exporter = "prometheus_opensearch_dashboards_exporter.main:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

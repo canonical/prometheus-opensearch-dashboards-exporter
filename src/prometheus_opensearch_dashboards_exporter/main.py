@@ -13,7 +13,7 @@ from wsgiref.simple_server import make_server
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
 
-from prometheus_opensearch_dashboards_exporter.src.collector import (
+from prometheus_opensearch_dashboards_exporter.collector import (
     Config,
     DashboardsCollector,
 )

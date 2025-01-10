@@ -9,7 +9,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import pytest
 
-from prometheus_opensearch_dashboards_exporter.src.collector import (
+from prometheus_opensearch_dashboards_exporter.collector import (
     API_STATUS_ENDPOINT,
     METRICS_PREFIX,
     Config,
@@ -47,7 +47,7 @@ def start_mock_server(mock_opensearch_api_handler):
 def prometheus_exporter(start_mock_server):
     # Start the Prometheus exporter
     process = subprocess.Popen(
-        ["python3", "prometheus_opensearch_dashboards_exporter/src/main.py"],
+        ["python3", "src/prometheus_opensearch_dashboards_exporter/main.py"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
@@ -64,7 +64,7 @@ def wrong_prometheus_exporter(start_mock_server):
     process = subprocess.Popen(
         [
             "python3",
-            "prometheus_opensearch_dashboards_exporter/src/main.py",
+            "src/prometheus_opensearch_dashboards_exporter/main.py",
             "--url",
             "https://localhost:5601",
         ],

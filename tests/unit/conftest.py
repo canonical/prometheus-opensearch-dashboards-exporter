@@ -6,14 +6,12 @@ from unittest.mock import patch
 
 import pytest
 
-from prometheus_opensearch_dashboards_exporter.src.collector import Config
+from prometheus_opensearch_dashboards_exporter.collector import Config
 
 
 @pytest.fixture
 def mock_gauge():
-    with patch(
-        "prometheus_opensearch_dashboards_exporter.src.collector.GaugeMetricFamily"
-    ) as mock:
+    with patch("prometheus_opensearch_dashboards_exporter.collector.GaugeMetricFamily") as mock:
         mock.return_value = mock
         yield mock
 
@@ -26,8 +24,6 @@ def mock_config():
 
 @pytest.fixture
 def mock_collect_api_status(api_response):
-    with patch(
-        "prometheus_opensearch_dashboards_exporter.src.collector.collect_api_status"
-    ) as mock:
+    with patch("prometheus_opensearch_dashboards_exporter.collector.collect_api_status") as mock:
         mock.return_value = api_response
         yield mock
