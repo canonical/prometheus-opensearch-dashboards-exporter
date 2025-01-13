@@ -3,22 +3,13 @@ An exporter for OpenSearch Dashboards
 
 
 ## Installing
-With [poetry](https://python-poetry.org/) installed, clone this repo and run:
+With [poetry>=2.0.0](https://python-poetry.org/) installed, clone this repo and run:
 
 ```shell
 poetry install
-```
 
-```shell
-poetry build
-```
-
-Builds will be located at `dist`. Access the virtual environment and install the build package.
-
-```shell
-poetry shell
-
-pip install ./dist/prometheus_opensearch_dashboards_exporter-0.1.0.tar.gz
+# activate the environment
+eval $(poetry env activate)
 ```
 
 
