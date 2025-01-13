@@ -1,0 +1,76 @@
+# Copyright 2024 Canonical Ltd.
+# See LICENSE file for licensing details.
+name: Tests
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - '**.rst'
+
+concurrency:
+  # We do not want to run multiple jobs for single PR.
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Linters
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        pipx install tox
+        pipx install poetry
+    - name: Run lint checkers
+      run: tox -e lint
+
+  unit-test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        pipx install tox
+        pipx install poetry
+    - name: Run lint checkers
+      run: tox -e unit
+
+  integration-test:
+    name: Integration tests
+    needs:
+      - lint
+      - unit-test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        pipx install tox
+        pipx install poetry
+    - name: Run lint checkers
+      run: tox -e integration

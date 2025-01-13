@@ -1,0 +1,174 @@
+[project]
+name = "prometheus-opensearch-dashboards-exporter"
+version = "0.1.0"
+description = "An exporter for OpenSearch Dashboards"
+authors = [
+    {name = "Gabriel Cocenza",email = "gabriel.cocenza@canonical.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache License"
+packages = [
+    {  include = "prometheus_opensearch_dashboards_exporter", from = "src/prometheus_opensearch_dashboards_exporter" }
+]
+dependencies = [
+    "prometheus-client==0.21.1",
+    "requests==2.32.3",
+]
+
+[project.scripts]
+prometheus-opensearch-dashboards-exporter = "prometheus_opensearch_dashboards_exporter.main:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.group.format.dependencies]
+black = "^24.10.0"
+isort = "^5.13.2"
+
+
+[tool.poetry.group.lint.dependencies]
+isort = {extras = ["colors"], version = "^5.13.2"}
+black = "^24.10.0"
+flake8-docstrings = "^1.7.0"
+flake8-copyright = "^0.2.4"
+flake8-builtins = "^2.5.0"
+pep8-naming = "^0.14.1"
+codespell = "^2.3.0"
+shellcheck-py = "^0.10.0.1"
+pyproject-flake8 = "^7.0.0"
+flake8 = "7.0.0"
+mypy = "^1.13.0"
+pylint = "^3.3.2"
+
+
+[tool.poetry.group.unit.dependencies]
+pytest = "^8.3.4"
+coverage = {extras = ["toml"], version = "^7.6.8"}
+pytest-cov = "^6.0.0"
+
+
+[tool.poetry.group.integration.dependencies]
+pytest = "^8.3.4"
+requests = "^2.32.3"
+
+
+[tool.poetry.dependencies]
+requests = "^2.32.3"
+prometheus-client = "^0.21.1"
+
+
+[tool.coverage.run]
+source = ["prometheus_opensearch_dashboards_exporter", "tests/unit"]
+relative_files = true
+branch = true
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+log_cli_level = "INFO"
+markers = ["unstable"]
+asyncio_mode = "auto"
+
+# Formatting tools configuration
+[tool.black]
+line-length = 99
+target-version = ["py310"]
+exclude = '''
+/(
+    | .eggs
+    | .git
+    | .tox
+    | .venv
+    | .build
+    | build
+    | report
+    | docs
+)/
+'''
+
+[tool.isort]
+profile = "black"
+skip_glob = [
+    ".eggs",
+    ".git",
+    ".tox",
+    ".venv",
+    ".build",
+    "build",
+    "report",
+    "docs"
+]
+
+[tool.pylint]
+max-line-length = 99
+disable = ["E0401"]
+load-plugins = "pylint.extensions.docparams"
+ignore-paths = [
+    ".eggs",
+    ".git",
+    ".tox",
+    ".venv",
+    ".build",
+    "build",
+    "report",
+    "tests",
+    "docs"
+]
+default-docstring-type = "google"
+accept-no-param-doc = false
+accept-no-raise-doc = false
+accept-no-return-doc = false
+accept-no-yields-doc = false
+
+[tool.mypy]
+warn_unused_ignores = true
+warn_unused_configs = true
+warn_unreachable = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_namespace_packages = true
+exclude = [
+    ".eggs",
+    ".git",
+    ".tox",
+    ".venv",
+    ".build",
+    "build",
+    "lib",
+    "report",
+    "tests",
+    "docs"
+]
+
+[tool.codespell]
+skip = ".eggs,.tox,.git,.venv,venv,build,.build,lib,report,docs,poetry.lock, htmlcov"
+quiet-level = 3
+check-filenames = true
+ignore-words-list = "assertIn"
+
+
+# Linting tools configuration
+[tool.flake8]
+max-line-length = 99
+max-doc-length = 99
+max-complexity = 10
+exclude = [".git", "__pycache__", ".tox", "build", "dist", "*.egg_info", "venv", ".venv"]
+select = ["E", "W", "F", "C", "N", "R", "D", "H"]
+# Ignore W503, E501 because using black creates errors with this
+# Ignore D107 Missing docstring in __init__
+# Ignore D415 Docstring first line punctuation (doesn't make sense for properties)
+# Ignore N818 Exceptions end with "Error" (not all exceptions are errors)
+ignore = ["W503", "E501", "D107", "D415", "N818"]
+# D100, D101, D102, D103: Ignore missing docstrings in tests
+per-file-ignores = ["tests/*:D100,D101,D102,D103,D104"]
+docstring-convention = "google"
+# Check for properly formatted copyright header in each file
+copyright-check = "True"
+copyright-author = "Canonical Ltd."
+copyright-regexp = "Copyright\\s\\d{4}([-,]\\d{4})*\\s+%(author)s"

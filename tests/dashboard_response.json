@@ -1,0 +1,87 @@
+{
+    "name":"juju-78de9e-5",
+    "uuid":"d1accc55-4b11-47c4-a83f-7989d9c3f806",
+    "version":{
+        "number":"2.17.0",
+        "build_hash":"66369eb405516ab49de56f0d86ef4c5fb8ea031d",
+        "build_number":7946,
+        "build_snapshot":false
+    },
+    "status":{
+        "overall":{
+            "since":"2024-12-05T21:12:56.507Z",
+            "state":"green",
+            "title":"Green",
+            "nickname":"Looking good",
+            "icon":"success",
+            "uiColor":"secondary"
+        },
+        "statuses":[
+            {
+                "id":"core:opensearch@2.17.0",
+                "message":"OpenSearch is available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            },
+            {
+                "id":"plugin:securityDashboards@2.17.0",
+                "message":"All dependencies are available",
+                "since":"2024-12-05T21:12:56.507Z",
+                "state":"green",
+                "icon":"success",
+                "uiColor":"secondary"
+            }
+        ]
+    },
+    "metrics":{
+        "last_updated":"2024-12-05T21:12:56.297Z",
+        "collection_interval_in_millis":5000,
+        "os":{
+            "platform":"linux",
+            "platformRelease":"linux-6.11.0-9-generic",
+            "load":{
+                "1m":0.74,
+                "5m":0.73,
+                "15m":0.81
+            },
+            "memory":{
+                "total_in_bytes":40482496512,
+                "free_in_bytes":39975735296,
+                "used_in_bytes":506761216
+            },
+            "uptime_in_millis":32528680,
+            "distro":"Ubuntu",
+            "distroRelease":"Ubuntu-22.04"
+        },
+        "process":{
+            "memory":{
+                "heap":{
+                    "total_in_bytes":161812480,
+                    "used_in_bytes":144470864,
+                    "size_limit":4345298944
+                },
+                "resident_set_size_in_bytes":224464896
+            },
+            "pid":19350,
+            "event_loop_delay":1.7875459976494312,
+            "uptime_in_millis":8058334.333332
+        },
+        "response_times":{
+            "avg_in_millis":0,
+            "max_in_millis":0
+        },
+        "concurrent_connections":1,
+        "requests":{
+            "disconnects":0,
+            "total":0,
+            "statusCodes":{
+
+            },
+            "status_codes":{
+
+            }
+        }
+    }
+}
