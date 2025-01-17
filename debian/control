@@ -1,0 +1,14 @@
+Source: prometheus-opensearch-dashboards-exporter
+Maintainer: Gabriel Cocenza <gabriel.cocenza@canonical.com>
+Section: python
+Priority: optional
+Build-Depends: debhelper (>= 12), dh-python, python3-all, python3-setuptools, python3-pip
+Standards-Version: 4.6.0
+Homepage: https://github.com/canonical/prometheus-opensearch-dashboards-exporter
+Vcs-Git: https://github.com/canonical/prometheus-opensearch-dashboards-exporter.git
+Vcs-Browser: https://github.com/canonical/prometheus-opensearch-dashboards-exporter
+
+Package: prometheus-opensearch-dashboards-exporter
+Architecture: amd64
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: An exporter for OpenSearch Dashboards

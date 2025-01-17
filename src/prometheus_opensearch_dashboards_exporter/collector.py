@@ -5,13 +5,31 @@
 import logging
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Generator, Optional, Sequence
+from typing import Any, Generator, Iterable, Optional, Sequence
 
 import requests
 from prometheus_client.core import GaugeMetricFamily, Metric
-from prometheus_client.registry import Collector
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError, RequestException, Timeout
+
+try:  # pragma: no cover
+    from prometheus_client.registry import (  # pylint: disable=ungrouped-imports
+        Collector,
+    )
+except ImportError:  # pragma: no cover
+    # On Ubuntu 22.04 (jammy), python3-prometheus-client does not have the Collector class that
+    # is available just on Ubuntu 24.04 (noble). When building the deb package only packages from
+    # the Ubuntu archive can be used.
+    # This creates a backport from python3-prometheus-client==0.19.0
+    from abc import ABC, abstractmethod
+
+    class Collector(ABC):  # type: ignore # pylint: disable=too-few-public-methods
+        """Abstract Collector class"""
+
+        @abstractmethod
+        def collect(self) -> Iterable[Metric]:
+            """Abstract method to collect the metrics"""
+
 
 METRICS_PREFIX = "opensearch_dashboards_"
 API_STATUS_ENDPOINT = "/api/status"

@@ -3,13 +3,13 @@ An exporter for OpenSearch Dashboards
 
 
 ## Installing
-With [poetry>=2.0.0](https://python-poetry.org/) installed, clone this repo and run:
+With [poetry<=2.0.0](https://python-poetry.org/) installed, clone this repo and run:
 
 ```shell
 poetry install
 
 # activate the environment
-eval $(poetry env activate)
+poetry shell
 ```
 
 
@@ -62,3 +62,40 @@ The metrics exposed by this Exporter are the following.
 | `opensearch_dashboards_resp_time_max`          | Maximum response time in milliseconds                                                                                           | Gauge |
 | `opensearch_dashboards_req_disconnects`        | Request disconnections count                                                                                                    | Gauge |
 | `opensearch_dashboards_req_total`              | Total request count                                                                                                             | Gauge |
+
+
+## Debian Package
+This project can build a debian package that will be used on [opensearch-dashboards-snap](https://github.com/canonical/opensearch-dashboards-snap). To manually build and release in a ppa, do the following steps:
+
+1. Create a new version in the debian changelog:
+
+```shell
+dch -v <version> "<MSG>"
+```
+After that, go to the `changelog` file and set the urgency and ubuntu release:
+
+```
+prometheus-opensearch-dashboards-exporter <version> noble; urgency=medium
+
+  * My change
+
+ -- Joe Doe <joe.doe@foo.com>  Thu, 16 Jan 2025 18:25:59 -0300
+```
+
+2. Build the package signing with a [registered launchpad GPG key](https://launchpad.net/+help-registry/openpgp-keys.html)
+
+You can get the number of your GPG key by running:
+
+```shell
+gpg --list-keys
+```
+
+```shell
+debuild -S -sa -k<KEY_ID>
+```
+
+3. Push to a ppa
+After successfully build the deb package push to a ppa. The generated files are in the parent folder of the project:
+```
+dput ppa:<my-ppa> <source.changes>
+```
