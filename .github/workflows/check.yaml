@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   pull_request:
     types: [ opened, synchronize, reopened ]
-    branches: [ main ]
+    branches: [ 2/edge ]
     paths-ignore:
       - '**.md'
       - '**.rst'
