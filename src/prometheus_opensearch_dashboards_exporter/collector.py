@@ -9,9 +9,22 @@ from typing import Any, Generator, Optional, Sequence
 
 import requests
 from prometheus_client.core import GaugeMetricFamily, Metric
-from prometheus_client.registry import Collector
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError, RequestException, Timeout
+
+
+try:
+    from prometheus_client.registry import Collector
+except ImportError:
+    # Backport the Collector base class from prometheus-client==0.19.0
+    from abc import ABC, abstractmethod
+    from typing import Iterable
+
+    class Collector(ABC):
+        @abstractmethod
+        def collect(self) -> Iterable[Metric]:
+            pass
+
 
 METRICS_PREFIX = "opensearch_dashboards_"
 API_STATUS_ENDPOINT = "/api/status"
