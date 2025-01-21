@@ -30,6 +30,7 @@ setup(
     long_description_content_type="text/markdown",
     python_requires=">=3.10",
     packages=find_packages(where="src"),
+    include_package_data=True,
     install_requires=read_requirements(),
     entry_points={
         "console_scripts": [

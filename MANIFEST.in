@@ -1,0 +1,1 @@
+include src/prometheus_opensearch_dashboards_exporter/*.html
