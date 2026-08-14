@@ -21,13 +21,13 @@ requests = "^2.34.2"
 
 
 [tool.poetry.group.format.dependencies]
-black = "^24.10.0"
+black = ">=24.10,<27.0"
 isort = "^5.13.2"
 
 
 [tool.poetry.group.lint.dependencies]
 isort = {extras = ["colors"], version = "^5.13.2"}
-black = "^24.10.0"
+black = ">=24.10,<27.0"
 flake8-docstrings = "^1.7.0"
 flake8-copyright = "^0.2.4"
 flake8-builtins = "^2.5.0"
