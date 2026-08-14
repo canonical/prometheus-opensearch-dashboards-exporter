@@ -1,3 +1,10 @@
+prometheus-opensearch-dashboards-exporter (0.1.5) noble; urgency=emergency
+
+  * Build one architecture-independent package for all supported Debian
+    architectures, including arm64 and armhf.
+
+ -- Mehdi Bendriss <mehdi.bendriss@canonical.com>  Fri, 14 Aug 2026 18:05:53 +0100
+
 prometheus-opensearch-dashboards-exporter (0.1.4) noble; urgency=emergency
 
   * Adding html page to pkg build
