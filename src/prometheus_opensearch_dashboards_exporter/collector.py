@@ -361,9 +361,9 @@ def _get_heap(api_metrics: dict, heap: Heap) -> Optional[Metric]:
     prefix = heap_value.split("_")[0]
     metric_name = f"{METRICS_PREFIX}heap_{prefix}"
     match api_metrics:
-        case {
-            "metrics": {"process": {"memory": {"heap": heap_values}}}
-        } if heap_value in heap_values:
+        case {"metrics": {"process": {"memory": {"heap": heap_values}}}} if (
+            heap_value in heap_values
+        ):
             return GaugeMetricFamily(
                 name=metric_name,
                 documentation=f"Opensearch dashboards memory heap {prefix} in bytes",
