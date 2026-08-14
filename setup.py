@@ -21,11 +21,11 @@ def read_requirements(file: str = "requirements.txt") -> list[str]:
 
 setup(
     name="prometheus-opensearch-dashboards-exporter",
-    version="0.1.0",
+    version="0.1.5",
     description="An exporter for OpenSearch Dashboards",
     author="Gabriel Cocenza",
     author_email="gabriel.cocenza@canonical.com",
-    license="Apache License",
+    license="Apache License 2.0",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     python_requires=">=3.10",
