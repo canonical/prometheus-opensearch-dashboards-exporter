@@ -1,0 +1,49 @@
+.TH PROMETHEUS-OPENSEARCH-DASHBOARDS-EXPORTER 1 "2026-08-14" "" "User Commands"
+.SH NAME
+prometheus-opensearch-dashboards-exporter \- export OpenSearch Dashboards
+metrics for Prometheus
+.SH SYNOPSIS
+.B prometheus-opensearch-dashboards-exporter
+.RI [ options ]
+.SH DESCRIPTION
+.B prometheus-opensearch-dashboards-exporter
+queries the OpenSearch Dashboards status API and exposes status and process
+metrics over HTTP for collection by Prometheus-compatible monitoring systems.
+.SH OPTIONS
+.TP
+.BI \-\-url " URL"
+OpenSearch Dashboards address from which to fetch metrics.
+The default is
+\fBhttp://localhost:5601\fP.
+.TP
+.BI \-\-port " PORT"
+TCP port on which the exporter serves HTTP requests.
+The default is
+\fB9684\fP.
+.TP
+.BR \-h ", " \-\-help
+Show command-line help and exit.
+.SH ENVIRONMENT
+.TP
+.B OPENSEARCH_DASHBOARDS_USER
+User name for authenticating to OpenSearch Dashboards.
+.TP
+.B OPENSEARCH_DASHBOARDS_PASSWORD
+Password for authenticating to OpenSearch Dashboards.
+.SH ENDPOINTS
+.TP
+.B /metrics
+Prometheus metrics endpoint.
+.TP
+.B /
+Exporter information page.
+.PP
+Other paths return HTTP status 404.
+.SH SEE ALSO
+.UR https://github.com/canonical/prometheus-opensearch-dashboards-exporter
+Project homepage
+.UE
+.SH AUTHOR
+Canonical Ltd.
+.SH LICENSE
+Apache License, Version 2.0.

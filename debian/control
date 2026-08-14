@@ -2,7 +2,15 @@ Source: prometheus-opensearch-dashboards-exporter
 Maintainer: Gabriel Cocenza <gabriel.cocenza@canonical.com>
 Section: python
 Priority: optional
-Build-Depends: debhelper (>= 12), dh-python, python3-all, python3-setuptools, python3-pip
+Build-Depends:
+ debhelper (>= 12),
+ dh-python,
+ pybuild-plugin-pyproject,
+ python3-all,
+ python3-poetry-core,
+ python3-prometheus-client,
+ python3-pytest,
+ python3-requests,
 Standards-Version: 4.6.0
 Homepage: https://github.com/canonical/prometheus-opensearch-dashboards-exporter
 Vcs-Git: https://github.com/canonical/prometheus-opensearch-dashboards-exporter.git
@@ -11,4 +19,7 @@ Vcs-Browser: https://github.com/canonical/prometheus-opensearch-dashboards-expor
 Package: prometheus-opensearch-dashboards-exporter
 Architecture: all
 Depends: ${python3:Depends}, ${misc:Depends}
-Description: An exporter for OpenSearch Dashboards
+Description: Prometheus exporter for OpenSearch Dashboards
+ This package queries the OpenSearch Dashboards status API and exports status
+ and process metrics over HTTP. Prometheus and compatible monitoring systems
+ can collect the metrics from the exporter's /metrics endpoint.

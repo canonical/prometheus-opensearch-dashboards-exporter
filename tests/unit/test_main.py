@@ -60,10 +60,7 @@ def test_metrics_app_root_path():
     mocked_environ = MagicMock()
     mocked_environ.get.return_value = "/"
     mocked_start_response = MagicMock()
-    html_file = (
-        Path(__file__).resolve().parents[2]
-        / "src/prometheus_opensearch_dashboards_exporter/index.html"
-    )
+    html_file = Path(main.__file__).parent / "index.html"
     assert main.metrics_app(mocked_environ, mocked_start_response) == [html_file.read_bytes()]
     mocked_start_response.assert_called_once_with("200 OK", [("Content-Type", "text/html")])
 
