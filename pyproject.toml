@@ -21,13 +21,13 @@ requests = "^2.34.2"
 
 
 [tool.poetry.group.format.dependencies]
-black = ">=24.10,<27.0"
+black = "^26.5.1"
 isort = "^5.13.2"
 
 
 [tool.poetry.group.lint.dependencies]
 isort = {extras = ["colors"], version = "^5.13.2"}
-black = ">=24.10,<27.0"
+black = "^26.5.1"
 flake8-docstrings = "^1.7.0"
 flake8-copyright = "^0.2.4"
 flake8-builtins = "^2.5.0"
@@ -69,7 +69,6 @@ show_missing = true
 minversion = "6.0"
 log_cli_level = "INFO"
 markers = ["unstable"]
-asyncio_mode = "auto"
 
 # Formatting tools configuration
 [tool.black]
